@@ -470,6 +470,10 @@ public class InAppWebView: WKWebView, UIScrollViewDelegate, WKUIDelegate, WKNavi
         configuration.userContentController.add(self, name: "onWebMessagePortMessageReceived")
         configuration.userContentController.removeScriptMessageHandler(forName: "onWebMessageListenerPostMessageReceived")
         configuration.userContentController.add(self, name: "onWebMessageListenerPostMessageReceived")
+        
+        configuration.userContentController.add(self, name: "ios_signUpWithGoogle")
+        configuration.userContentController.add(self, name: "ios_signUpWithApple")
+
         configuration.userContentController.addUserOnlyScripts(initialUserScripts)
         configuration.userContentController.sync(scriptMessageHandler: self)
     }

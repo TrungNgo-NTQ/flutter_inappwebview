@@ -10,6 +10,21 @@ import Foundation
 import WebKit
 
 public class InAppWebView: WKWebView, UIScrollViewDelegate, WKUIDelegate, WKNavigationDelegate, WKScriptMessageHandler, UIGestureRecognizerDelegate, PullToRefreshDelegate {
+    
+    enum MessageHandlerName: String {
+        case ios_loginedJWT
+        case ios_signedUp
+        case ios_showTop
+        case ios_showOfferList
+        case ios_signUpWithGoogle
+        case ios_signUpWithApple
+        case ios_showFavorites
+        case ios_offerCompleted
+        case ios_eventWithOfferCompleted
+        case ios_matchingDone
+        case ios_linkageGoogle
+        case ios_linkageApple
+    }
 
     var windowId: Int64?
     var windowCreated = false
@@ -60,7 +75,23 @@ public class InAppWebView: WKWebView, UIScrollViewDelegate, WKUIDelegate, WKNavi
     var oldZoomScale = Float(1.0)
     
     init(frame: CGRect, configuration: WKWebViewConfiguration, contextMenu: [String: Any]?, channel: FlutterMethodChannel?, userScripts: [UserScript] = []) {
-        super.init(frame: frame, configuration: configuration)
+        let configuration1 = WKWebViewConfiguration()
+        configuration1.processPool = processPool
+        let userController = WKUserContentController()
+        userController.add(self, name: .ios_loginedJWT)
+        userController.add(self, name: .ios_signedUp)
+        userController.add(self, name: .ios_showTop)
+        userController.add(self, name: .ios_showOfferList)
+        userController.add(self, name: .ios_signUpWithGoogle)
+        userController.add(self, name: .ios_signUpWithApple)
+        userController.add(self, name: .ios_showFavorites)
+        userController.add(self, name: .ios_offerCompleted)
+        userController.add(self, name: .ios_eventWithOfferCompleted)
+        userController.add(self, name: .ios_matchingDone)
+        userController.add(self, name: .ios_linkageGoogle)
+        userController.add(self, name: .ios_linkageApple)
+        configuration1.userContentController = userController
+        super.init(frame: frame, configuration: configuration1)
         self.channel = channel
         self.contextMenu = contextMenu
         self.initialUserScripts = userScripts

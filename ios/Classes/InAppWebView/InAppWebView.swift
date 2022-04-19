@@ -63,7 +63,7 @@ public class InAppWebView: WKWebView, UIScrollViewDelegate, WKUIDelegate, WKNavi
     
     init(frame: CGRect, configuration: WKWebViewConfiguration, contextMenu: [String: Any]?, channel: FlutterMethodChannel?, userScripts: [UserScript] = []) {
         let configuration1 = WKWebViewConfiguration()
-        configuration1.processPool = processPool
+//        configuration1.processPool = processPool
         let userController = WKUserContentController()
         userController.add(self, name: "ios_loginedJWT")
         userController.add(self, name: "ios_signedUp")

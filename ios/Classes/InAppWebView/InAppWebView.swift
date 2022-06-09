@@ -65,18 +65,6 @@ public class InAppWebView: WKWebView, UIScrollViewDelegate, WKUIDelegate, WKNavi
         let configuration1 = WKWebViewConfiguration()
 //        configuration1.processPool = processPool
         let userController = WKUserContentController()
-        userController.add(self, name: "ios_loginedJWT")
-        userController.add(self, name: "ios_signedUp")
-        userController.add(self, name: "ios_showTop")
-        userController.add(self, name: "ios_showOfferList")
-        userController.add(self, name: "ios_signUpWithGoogle")
-        userController.add(self, name: "ios_signUpWithApple")
-        userController.add(self, name: "ios_showFavorites")
-        userController.add(self, name: "ios_offerCompleted")
-        userController.add(self, name: "ios_eventWithOfferCompleted")
-        userController.add(self, name: "ios_matchingDone")
-        userController.add(self, name: "ios_linkageGoogle")
-        userController.add(self, name: "ios_linkageApple")
         configuration1.userContentController = userController
         super.init(frame: frame, configuration: configuration1)
         self.channel = channel
@@ -489,9 +477,21 @@ public class InAppWebView: WKWebView, UIScrollViewDelegate, WKUIDelegate, WKNavi
         configuration.userContentController.removeScriptMessageHandler(forName: "onWebMessageListenerPostMessageReceived")
         configuration.userContentController.add(self, name: "onWebMessageListenerPostMessageReceived")
         
+        //Add MessageHandlerName offerbox start
         configuration.userContentController.add(self, name: "ios_signUpWithGoogle")
         configuration.userContentController.add(self, name: "ios_signUpWithApple")
-
+        configuration.userContentController.add(self, name: "ios_loginedJWT")
+        configuration.userContentController.add(self, name: "ios_signedUp")
+        configuration.userContentController.add(self, name: "ios_showTop")
+        configuration.userContentController.add(self, name: "ios_showOfferList")
+        configuration.userContentController.add(self, name: "ios_showFavorites")
+        configuration.userContentController.add(self, name: "ios_offerCompleted")
+        configuration.userContentController.add(self, name: "ios_eventWithOfferCompleted")
+        configuration.userContentController.add(self, name: "ios_matchingDone")
+        configuration.userContentController.add(self, name: "ios_linkageGoogle")
+        configuration.userContentController.add(self, name: "ios_linkageApple")
+        //Add MessageHandlerName offerbox start
+        
         configuration.userContentController.addUserOnlyScripts(initialUserScripts)
         configuration.userContentController.sync(scriptMessageHandler: self)
     }

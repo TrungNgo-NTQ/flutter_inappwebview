@@ -2682,6 +2682,13 @@ if(window.\(JAVASCRIPT_BRIDGE_NAME)[\(_callHandlerID)] != null) {
                     sourceOrigin = URL(string: "\(scheme)://\(host)\(port != nil && port != 0 ? ":" + String(port!) : "")")
                 }
                 webMessageListener.onPostMessage(message: messageData, sourceOrigin: sourceOrigin, isMainFrame: isMainFrame)
+            } else if message.name.starts(with: "ios_") {
+                if let body = message.body as? String, let name = message.name as? String {
+                    var messageLevel = 1
+                    var webView = self
+                    let mesage = "Name: " + name + "\nBody: " +  body
+                    webView.onConsoleMessage(message: mesage, messageLevel: messageLevel)
+                }
             }
         }
     }

@@ -2683,13 +2683,16 @@ if(window.\(JAVASCRIPT_BRIDGE_NAME)[\(_callHandlerID)] != null) {
                 }
                 webMessageListener.onPostMessage(message: messageData, sourceOrigin: sourceOrigin, isMainFrame: isMainFrame)
             } else if message.name.starts(with: "ios_") {
-                if let body = message.body as? String, let name = message.name as? String {
-                    var messageLevel = 1
-                    var webView = self
-                    let mesage = "Name: " + name + "\nBody: " +  body
-                    webView.onConsoleMessage(message: mesage, messageLevel: messageLevel)
-                }
-            }
+                        var messageLevel = 1
+                        let consoleMessage = message.name
+                        var webView = self
+                        if let body = message.body as? String, let name = message.name as? String {
+                            let mesage = "Name:" + name + "\nBody:" +  body
+                            webView.onConsoleMessage(message: mesage, messageLevel: messageLevel)
+                        } else {
+                            webView.onConsoleMessage(message: consoleMessage, messageLevel: messageLevel)
+                        }
+                    }
         }
     }
     

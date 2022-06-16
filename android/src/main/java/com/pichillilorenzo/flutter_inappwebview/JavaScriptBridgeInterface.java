@@ -29,6 +29,34 @@ public class JavaScriptBridgeInterface {
     this.channel = this.inAppWebView.channel;
   }
 
+  //Function for offer-box start 
+  @JavascriptInterface
+    fun login(token: String) {
+        // SharedPreferenceService.saveToken(Global.applicationContext, token)
+        // ParseHelper.executeRegisterParseInstallationId(token)
+        // activity.startActivity(Intent(activity, MainActivity::class.java))
+        // activity.finish()
+            Map<String, Object> obj = new HashMap<>();
+    obj.put("message", 'androi login');
+    obj.put("messageLevel", 1);
+    channel.invokeMethod("onConsoleMessage", obj);
+
+    }
+
+  @JavascriptInterface
+  fun signedUp(hireyear: String) {
+      // Firebase Analyticsに新規登録イベント・採用年度を送信
+      // val analytics = FirebaseAnalytics.getInstance(Global.applicationContext)
+      // val bundle = Bundle()
+      // bundle.putString("hireyear", hireyear)
+      // analytics.logEvent(FirebaseAnalytics.Event.SIGN_UP, bundle)
+      // analytics.setUserProperty("hireyear", hireyear)
+  }
+
+
+
+  //Function for offerbox end
+
   @JavascriptInterface
   public void _hideContextMenu() {
     if (inAppWebView == null) {

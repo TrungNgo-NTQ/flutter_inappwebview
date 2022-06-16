@@ -36,10 +36,16 @@ public class JavaScriptBridgeInterface {
         // ParseHelper.executeRegisterParseInstallationId(token)
         // activity.startActivity(Intent(activity, MainActivity::class.java))
         // activity.finish()
-            Map<String, Object> obj = new HashMap<>();
-    obj.put("message", 'androi_loginedJWT');
-    obj.put("messageLevel", 1);
-    channel.invokeMethod("onConsoleMessage", obj);
+      Map<String, Object> obj = new HashMap<>();
+      obj.put("message", "androi_loginedJWT");
+      obj.put("messageLevel", 1);
+      Log.d("TrungNV", "login");
+      if (channel == null) {
+        Log.d("TrungNV", "channel null");
+      } else {
+        Log.d("TrungNV", "channel not null");
+      }
+      channel.invokeMethod("onConsoleMessage", obj);
 
     }
 

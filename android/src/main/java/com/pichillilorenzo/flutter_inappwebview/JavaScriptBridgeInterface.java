@@ -31,7 +31,7 @@ public class JavaScriptBridgeInterface {
 
   //Function for offer-box start 
   @JavascriptInterface
-    public void(String token) {
+    public void login(final String handlerName) {
         // SharedPreferenceService.saveToken(Global.applicationContext, token)
         // ParseHelper.executeRegisterParseInstallationId(token)
         // activity.startActivity(Intent(activity, MainActivity::class.java))

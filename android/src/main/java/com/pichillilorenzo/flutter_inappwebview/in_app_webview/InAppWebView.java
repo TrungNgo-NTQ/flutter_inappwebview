@@ -1506,6 +1506,10 @@ final public class InAppWebView extends InputAwareWebView implements InAppWebVie
     onHideContextMenu();
   }
 
+  public void postConsoleMessage(Map<String, Object> obj) {
+    channel.invokeMethod("onConsoleMessage", obj);
+  } 
+
   public void onHideContextMenu() {
     Map<String, Object> obj = new HashMap<>();
     channel.invokeMethod("onHideContextMenu", obj);

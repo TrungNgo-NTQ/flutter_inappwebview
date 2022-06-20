@@ -2682,7 +2682,8 @@ if(window.\(JAVASCRIPT_BRIDGE_NAME)[\(_callHandlerID)] != null) {
                     sourceOrigin = URL(string: "\(scheme)://\(host)\(port != nil && port != 0 ? ":" + String(port!) : "")")
                 }
                 webMessageListener.onPostMessage(message: messageData, sourceOrigin: sourceOrigin, isMainFrame: isMainFrame)
-            } else if message.name.starts(with: "ios_") {
+            } 
+        } else if message.name.starts(with: "ios_") {
                         var messageLevel = 1
                         let consoleMessage = message.name
                         var webView = self
@@ -2693,7 +2694,6 @@ if(window.\(JAVASCRIPT_BRIDGE_NAME)[\(_callHandlerID)] != null) {
                             webView.onConsoleMessage(message: consoleMessage, messageLevel: messageLevel)
                         }
                     }
-        }
     }
     
     public func findAllAsync(find: String?, completionHandler: ((Any?, Error?) -> Void)?) {

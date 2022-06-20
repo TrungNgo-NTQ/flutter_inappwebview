@@ -39,14 +39,38 @@ public class JavaScriptBridgeInterface {
       Map<String, Object> obj = new HashMap<>();
       obj.put("message", "androi_loginedJWT");
       obj.put("messageLevel", 1);
-      Log.d("TrungNV", "login");
-      if (channel == null) {
-        Log.d("TrungNV", "channel null");
-      } else {
-        Log.d("TrungNV", "channel not null");
-      }
-      channel.invokeMethod("onConsoleMessage", obj);
+      inAppWebView.postConsoleMessage(obj);
+    }
 
+    @JavascriptInterface
+    public void linkageGoogle() {
+      Log.d("TrungNV", "linkageGoogle");
+    }
+
+
+    @JavascriptInterface
+    public void linkageFacebook() {
+      Log.d("TrungNV", "linkageFacebook");
+    }
+
+
+    @JavascriptInterface
+    public void signUpWithFacebook() {
+      Log.d("TrungNV", "signUpWithFacebook");
+    }
+
+
+    @JavascriptInterface
+    public void signUpWithGoogle() {
+      Map<String, Object> obj = new HashMap<>();
+      obj.put("message", "androi_loginedJWT");
+      final Handler handler = new Handler(inAppWebView.getWebViewLooper());
+      handler.post(new Runnable() {
+        @Override
+        public void run() {
+          inAppWebView.login();
+        }
+      });
     }
 
   // @JavascriptInterface
@@ -62,6 +86,8 @@ public class JavaScriptBridgeInterface {
 
 
   //Function for offerbox end
+
+
 
   @JavascriptInterface
   public void _hideContextMenu() {

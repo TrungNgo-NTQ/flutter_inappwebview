@@ -1,10 +1,17 @@
 import 'dart:convert';
 
 import '../in_app_webview/in_app_webview_controller.dart';
-import '../types.dart';
+import '../types/main.dart';
+import 'web_storage_item.dart';
 
 ///Class that provides access to the JavaScript [Web Storage API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API): `window.sessionStorage` and `window.localStorage`.
 ///It used by [InAppWebViewController.webStorage].
+///
+///**Supported Platforms/Implementations**:
+///- Android native WebView
+///- iOS
+///- MacOS
+///- Web
 class WebStorage {
   ///Represents `window.localStorage`.
   LocalStorage localStorage;
@@ -13,39 +20,18 @@ class WebStorage {
   SessionStorage sessionStorage;
 
   WebStorage({required this.localStorage, required this.sessionStorage});
-}
 
-///Class that represents a single web storage item of the JavaScript `window.sessionStorage` and `window.localStorage` objects.
-class WebStorageItem {
-  ///Item key.
-  String? key;
-
-  ///Item value.
-  dynamic value;
-
-  WebStorageItem({this.key, this.value});
-
-  Map<String, dynamic> toMap() {
-    return {
-      "key": key,
-      "value": value,
-    };
-  }
-
-  Map<String, dynamic> toJson() {
-    return this.toMap();
-  }
-
-  @override
-  String toString() {
-    return toMap().toString();
+  ///Disposes the web storage.
+  void dispose() {
+    localStorage.dispose();
+    sessionStorage.dispose();
   }
 }
 
 ///Class that provides methods to manage the JavaScript [Storage](https://developer.mozilla.org/en-US/docs/Web/API/Storage) object.
 ///It is used by [LocalStorage] and [SessionStorage].
 class Storage {
-  late InAppWebViewController _controller;
+  InAppWebViewController? _controller;
 
   ///The web storage type: `window.sessionStorage` or `window.localStorage`.
   WebStorageType webStorageType;
@@ -55,24 +41,45 @@ class Storage {
   }
 
   ///Returns an integer representing the number of data items stored in the Storage object.
+  ///
+  ///**NOTE for Web**: this method will have effect only if the iframe has the same origin.
+  ///
+  ///**Supported Platforms/Implementations**:
+  ///- Android native WebView
+  ///- iOS
+  ///- Web
   Future<int?> length() async {
-    var result = await _controller.evaluateJavascript(source: """
+    var result = await _controller?.evaluateJavascript(source: """
     window.$webStorageType.length;
     """);
     return result != null ? int.parse(json.decode(result)) : null;
   }
 
   ///When passed a [key] name and [value], will add that key to the storage, or update that key's value if it already exists.
+  ///
+  ///**NOTE for Web**: this method will have effect only if the iframe has the same origin.
+  ///
+  ///**Supported Platforms/Implementations**:
+  ///- Android native WebView
+  ///- iOS
+  ///- Web
   Future<void> setItem({required String key, required dynamic value}) async {
     var encodedValue = json.encode(value);
-    await _controller.evaluateJavascript(source: """
+    await _controller?.evaluateJavascript(source: """
     window.$webStorageType.setItem("$key", ${value is String ? encodedValue : "JSON.stringify($encodedValue)"});
     """);
   }
 
   ///When passed a [key] name, will return that key's value, or `null` if the key does not exist, in the given Storage object.
+  ///
+  ///**NOTE for Web**: this method will have effect only if the iframe has the same origin.
+  ///
+  ///**Supported Platforms/Implementations**:
+  ///- Android native WebView
+  ///- iOS
+  ///- Web
   Future<dynamic> getItem({required String key}) async {
-    var itemValue = await _controller.evaluateJavascript(source: """
+    var itemValue = await _controller?.evaluateJavascript(source: """
     window.$webStorageType.getItem("$key");
     """);
 
@@ -88,18 +95,32 @@ class Storage {
   }
 
   ///When passed a [key] name, will remove that key from the given Storage object if it exists.
+  ///
+  ///**NOTE for Web**: this method will have effect only if the iframe has the same origin.
+  ///
+  ///**Supported Platforms/Implementations**:
+  ///- Android native WebView
+  ///- iOS
+  ///- Web
   Future<void> removeItem({required String key}) async {
-    await _controller.evaluateJavascript(source: """
+    await _controller?.evaluateJavascript(source: """
     window.$webStorageType.removeItem("$key");
     """);
   }
 
   ///Returns the list of all items from the given Storage object.
+  ///
+  ///**NOTE for Web**: this method will have effect only if the iframe has the same origin.
+  ///
+  ///**Supported Platforms/Implementations**:
+  ///- Android native WebView
+  ///- iOS
+  ///- Web
   Future<List<WebStorageItem>> getItems() async {
     var webStorageItems = <WebStorageItem>[];
 
     List<Map<dynamic, dynamic>>? items =
-        (await _controller.evaluateJavascript(source: """
+        (await _controller?.evaluateJavascript(source: """
 (function() {
   var webStorageItems = [];
   for(var i = 0; i < window.$webStorageType.length; i++){
@@ -128,19 +149,38 @@ class Storage {
   }
 
   ///Clears all keys stored in a given Storage object.
+  ///
+  ///**NOTE for Web**: this method will have effect only if the iframe has the same origin.
+  ///
+  ///**Supported Platforms/Implementations**:
+  ///- Android native WebView
+  ///- iOS
+  ///- Web
   Future<void> clear() async {
-    await _controller.evaluateJavascript(source: """
+    await _controller?.evaluateJavascript(source: """
     window.$webStorageType.clear();
     """);
   }
 
   ///When passed a number [index], returns the name of the nth key in a given Storage object.
   ///The order of keys is user-agent defined, so you should not rely on it.
+  ///
+  ///**NOTE for Web**: this method will have effect only if the iframe has the same origin.
+  ///
+  ///**Supported Platforms/Implementations**:
+  ///- Android native WebView
+  ///- iOS
+  ///- Web
   Future<String> key({required int index}) async {
-    var result = await _controller.evaluateJavascript(source: """
+    var result = await _controller?.evaluateJavascript(source: """
     window.$webStorageType.key($index);
     """);
     return result != null ? json.decode(result) : null;
+  }
+
+  ///Disposes the storage.
+  void dispose() {
+    _controller = null;
   }
 }
 

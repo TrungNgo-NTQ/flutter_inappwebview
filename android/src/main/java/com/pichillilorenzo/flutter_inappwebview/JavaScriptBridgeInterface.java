@@ -33,14 +33,8 @@ public class JavaScriptBridgeInterface {
   @JavascriptInterface
   public void consoleLog(final String result) {
     Map<String, Object> obj = new HashMap<>();
-    obj.put("message", result);
+    obj.put("message", "123123123123123");
     obj.put("messageLevel", 1);
-    Log.d("TrungNV", "login");
-    if (channel == null) {
-      Log.d("TrungNV", "channel null");
-    } else {
-      Log.d("TrungNV", "channel not null");
-    }
     inAppWebView.postConsoleMessage(obj);
   }
 

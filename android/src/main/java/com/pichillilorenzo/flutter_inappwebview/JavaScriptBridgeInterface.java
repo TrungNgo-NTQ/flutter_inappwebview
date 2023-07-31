@@ -31,14 +31,17 @@ public class JavaScriptBridgeInterface {
 
 
   @JavascriptInterface
-  public void consoleLog(String jsResult) {
-    if (inAppWebView == null) {
-      return;
-    }
+  public void consoleLog(final String result) {
     Map<String, Object> obj = new HashMap<>();
-    obj.put("message", jsResult);
+    obj.put("message", result);
     obj.put("messageLevel", 1);
-    channel.invokeMethod("onConsoleMessage", obj);
+    Log.d("TrungNV", "login");
+    if (channel == null) {
+      Log.d("TrungNV", "channel null");
+    } else {
+      Log.d("TrungNV", "channel not null");
+    }
+    inAppWebView.postConsoleMessage(obj);
   }
 
   @JavascriptInterface

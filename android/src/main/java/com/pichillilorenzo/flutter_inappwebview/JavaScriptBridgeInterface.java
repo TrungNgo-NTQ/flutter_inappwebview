@@ -32,10 +32,24 @@ public class JavaScriptBridgeInterface {
 
   @JavascriptInterface
   public void consoleLog(final String result) {
+    Log.d("TrungNV", result);
     Map<String, Object> obj = new HashMap<>();
-    obj.put("message", "123123123123123");
+    obj.put("message", result);
     obj.put("messageLevel", 1);
-    inAppWebView.postConsoleMessage(obj);
+    Log.d("TrungNV", "123123123123123");
+     if (inAppWebView == null) {
+       Log.d("TrungNV", "123123123123123 inAppWebView == null");
+      return;
+    }
+     final Handler handler = new Handler(inAppWebView.getWebViewLooper());
+    handler.post(new Runnable() {
+      @Override
+      public void run() {
+        if (inAppWebView != null) {
+          inAppWebView.postConsoleMessage(obj);
+        }
+      }
+    });
   }
 
   @JavascriptInterface

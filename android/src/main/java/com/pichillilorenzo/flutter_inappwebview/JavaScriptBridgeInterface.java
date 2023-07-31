@@ -29,6 +29,18 @@ public class JavaScriptBridgeInterface {
     this.channel = this.inAppWebView.channel;
   }
 
+
+  @JavascriptInterface
+  public void consoleLog(String jsResult) {
+    if (inAppWebView == null) {
+      return;
+    }
+    Map<String, Object> obj = new HashMap<>();
+    obj.put("message", jsResult);
+    obj.put("messageLevel", 1);
+    channel.invokeMethod("onConsoleMessage", obj);
+  }
+
   @JavascriptInterface
   public void _hideContextMenu() {
     if (inAppWebView == null) {
